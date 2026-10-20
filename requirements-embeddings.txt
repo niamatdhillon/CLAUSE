@@ -1,0 +1,3 @@
+# Optional local semantic embeddings. First model initialization downloads the model once;
+# subsequent indexing/querying uses the local cache (the app never calls hosted embedding APIs).
+sentence-transformers>=3.0,<4

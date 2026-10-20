@@ -1,0 +1,2 @@
+# Required only for PDF text extraction; TXT and Markdown use the standard library.
+PyMuPDF==1.24.14

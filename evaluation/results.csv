@@ -1,0 +1,11 @@
+question,expected_document,retrieved_documents,hit,top_k,retriever
+How many days of annual leave are provided?,leave.txt,leave.txt,True,5,lexical BM25-like
+How early should I request planned leave?,leave.txt,leave.txt,True,5,lexical BM25-like
+Who approves remote work?,remote_work.txt,remote_work.txt,True,5,lexical BM25-like
+What should an approved remote arrangement document?,remote_work.txt,remote_work.txt,True,5,lexical BM25-like
+How do I report a lost work device?,remote_work.txt,remote_work.txt,True,5,lexical BM25-like
+How do I file a formal grievance?,grievance.txt,grievance.txt,True,5,lexical BM25-like
+Can I bring a colleague to the grievance meeting?,grievance.txt,grievance.txt,True,5,lexical BM25-like
+How long does HR have to acknowledge a grievance?,grievance.txt,grievance.txt,True,5,lexical BM25-like
+What is the process to appeal a grievance outcome?,grievance.txt,grievance.txt,True,5,lexical BM25-like
+What is the parental leave entitlement?,unanswerable,,False,5,lexical BM25-like

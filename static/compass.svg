@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="ring" x1="7" y1="5" x2="58" y2="60" gradientUnits="userSpaceOnUse"><stop stop-color="#6D8FFF"/><stop offset=".48" stop-color="#3563E9"/><stop offset="1" stop-color="#172554"/></linearGradient>
+    <linearGradient id="needle" x1="20" y1="13" x2="45" y2="51" gradientUnits="userSpaceOnUse"><stop stop-color="#8DB3FF"/><stop offset=".48" stop-color="#3563E9"/><stop offset="1" stop-color="#172554"/></linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="28" fill="#F6F8FF" stroke="url(#ring)" stroke-width="3"/>
+  <circle cx="32" cy="32" r="21.5" stroke="#AFC4FF" stroke-opacity=".62" stroke-width="1.2"/>
+  <path d="M32 9.5v5M32 49.5v5M9.5 32h5M49.5 32h5" stroke="#3563E9" stroke-linecap="round" stroke-width="1.8"/>
+  <path d="m40.8 19.8-4.7 14.3-13 10.2 4.6-14.2 13.1-10.3Z" fill="url(#needle)" stroke="#172554" stroke-linejoin="round" stroke-width="1.3"/>
+  <path d="m40.8 19.8-13.1 10.3 8.4 4 4.7-14.3Z" fill="#75A2FF"/>
+  <circle cx="32" cy="32" r="3.2" fill="#fff" stroke="#1E40AF" stroke-width="1.7"/>
+</svg>
