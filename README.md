@@ -1,102 +1,102 @@
-# CLAUSE
+# 🧭 CLAUSE
 
-**AI-Powered HR Policy Intelligence** · *Every policy. Clearly understood.*
+**AI-Powered HR Policy Intelligence.** *Every policy. Clearly understood.*
 
-CLAUSE is a local-first policy research workspace. It supports accounts, policy document ingestion, metadata filters, saved conversations, source inspection, and optional local AI using Ollama and Sentence Transformers. It does not use a paid API provider.
+CLAUSE is a local-first workspace for exploring HR policy documents. It brings together a conversational interface, a searchable policy library, metadata-filtered retrieval and source inspection, with optional local AI integrations.
 
-## Run locally
+## ✨ What is CLAUSE?
 
-Python 3.9–3.12:
+CLAUSE helps users find relevant information in workplace policy documents. Users can search in natural language, inspect matching excerpts and revisit saved conversations.
 
-```sh
-python3 -m pip install -r requirements.txt
-cp .env.example .env
-# Edit .env, then load it into this shell:
-set -a; . ./.env; set +a
-python3 app.py
-```
+CLAUSE brings together:
 
-Open http://127.0.0.1:8501 and create an account. Each new account receives three clearly labelled **synthetic examples** (remote work, leave and grievance), authored for this demo and not representative of an employer. Users can ask about their own indexed library. An administrator can upload PDF, TXT or Markdown files (10 MB maximum), retry indexing and remove stored source files. Local persistence is in `data/clause.sqlite3` and account directories under `data/documents/`.
+- 📄 **Document Intelligence** — Upload and organise PDF, TXT and Markdown policy documents.
+- 🔎 **Policy Retrieval** — Find relevant passages using lexical search, with optional local semantic retrieval.
+- 💬 **Conversational Search** — Ask policy questions and keep discussions in saved conversations.
+- 📚 **Source Evidence** — Inspect retrieved excerpts and available document and page details.
+- 🏷️ **Metadata Filtering** — Filter retrieval by document category and publication year when available.
+- 🗂️ **Policy Library** — Search, inspect, re-index and remove documents.
+- 👤 **Accounts** — Register, sign in and sign out, with documents and conversations scoped to the signed-in account.
+- 🛠️ **Admin Workspace** — Restrict document management, model diagnostics and retrieval evaluation to authorised accounts.
 
-## Local AI setup (optional)
+## 🚀 The Vision
 
-The audited environment did **not** have the Ollama executable/service, Sentence Transformers, PyTorch, a cached embedding model, or any model credentials installed. The application therefore runs with lexical evidence search only. No LLM synthesis was claimed or verified in that environment. When Ollama or the embedding model is unavailable, the employee experience says answer synthesis is unavailable and directs the user to inspect the evidence or contact an administrator.
+Workplace policies often contain important information buried in lengthy documents.
 
-1. Install Ollama for your operating system from [ollama.com/download](https://ollama.com/download), start its local service, and download a small chat model:
+CLAUSE explores how retrieval systems and language models can make policy information easier to find and understand by connecting natural-language questions with documentary evidence.
 
-   ```sh
-   ollama pull qwen2.5:3b
-   ollama list
-   ```
+The goal is simple: **less time searching, clearer explanations and evidence users can inspect.**
 
-2. Install the optional local embedding dependency:
+## 🧠 How It Works
 
-   ```sh
-   python3 -m pip install -r requirements-embeddings.txt
-   ```
+CLAUSE is designed around a retrieval-augmented generation (RAG) workflow:
 
-3. Download/cache the Sentence Transformers model once on a machine allowed to access the model host, then run CLAUSE offline with its local cache:
+1. **Ingest** — Extract text and available page information from uploaded policy documents.
+2. **Chunk** — Split documents into overlapping passages. The current defaults are 900 characters with 140 characters of overlap.
+3. **Index** — Store documents, passages and metadata in a local SQLite database. Optional local Sentence Transformers embeddings can add semantic retrieval.
+4. **Retrieve** — Search for relevant passages, applying the selected document metadata filters.
+5. **Generate** — When a local Ollama model is installed and reachable, use retrieved evidence to generate a grounded answer.
+6. **Cite** — Show source references and expandable excerpts so users can inspect the supporting text.
 
-   ```sh
-   python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")'
-   ```
+When the local AI components are unavailable, CLAUSE can still retrieve and display evidence, but it does not generate a synthesized answer. It communicates that limitation instead of making one up.
 
-   The first embedding model load downloads model files unless they are already cached. To use a pre-downloaded model directory, set `CLAUSE_EMBEDDING_PATH` to it. The app sets `local_files_only=True`; it does not fetch embeddings from a hosted API at question time.
+## 🎨 Product Experience
 
-4. Configure and restart CLAUSE:
+CLAUSE centres on the conversation and policy evidence in a responsive blue-and-white interface.
 
-   ```sh
-   export OLLAMA_HOST=http://127.0.0.1:11434
-   export OLLAMA_MODEL=qwen2.5:3b
-   export CLAUSE_ADMIN_EMAILS=you@example.com
-   python3 app.py
-   ```
+Its design includes:
 
-   Register/sign in using the allowlisted email to access **Admin workspace**. Admin diagnostics show Ollama reachability/model availability and whether the local embedding package/model files are available. Existing documents need **Retry indexing** to generate vectors after embeddings are first configured. The retriever uses a local MiniLM semantic score when matching vectors exist, combined with lexical coverage; otherwise it remains a lexical baseline. Chunking starts at 900 characters with 140-character overlap. These are pragmatic defaults, not a claimed optimum.
+- A custom compass-inspired SVG identity.
+- Midnight navy typography with cobalt and blue-violet accents.
+- Subtle atmospheric lighting, layered surfaces and restrained glass effects.
+- A focused chat experience with suggested questions and readable answers.
+- Expandable source excerpts with available document metadata.
+- Separate employee and restricted admin navigation.
 
-The local Ollama chat request receives the question, recent conversation context and retrieved policy excerpts. The system prompt treats question/history/excerpts as untrusted data and instructs the model to use only retrieved policy evidence. Citation labels are checked against the retrieved evidence. Ollama failures are returned as actionable errors. This application does not silently fall back to an external or paid provider.
+## 🛠️ Technology Stack
 
-## Accounts and access control
+The project uses:
 
-- This is a local demonstration account system: salted PBKDF2-HMAC-SHA256 password hashes and opaque, hashed, HttpOnly, SameSite cookies with a 14-day expiry.
-- Admin status comes only from the server-side `CLAUSE_ADMIN_EMAILS` allowlist. Employee-supplied role fields are ignored. Upload, re-index, remove, model diagnostics, settings and evaluation endpoints check the authenticated user's admin role server-side.
-- Document and conversation queries are scoped by owner ID. This is local account isolation verified by the HTTP smoke test, not managed cloud authentication/RLS.
-- There is no email verification or password reset, and no independent security audit or encryption-at-rest setup. Do not expose this local demo publicly for confidential HR records. Use HTTPS (`COOKIE_SECURE=1`), durable encrypted storage, backups, rate limiting, a managed identity provider and a privacy/security review before any sensitive deployment.
+- **Python** — Application server, document processing and retrieval logic.
+- **HTML, CSS and JavaScript** — Custom responsive web interface.
+- **SQLite** — Local accounts, documents, passages, optional vectors and conversation persistence.
+- **PyMuPDF** — PDF text extraction.
+- **Ollama** — Optional local language-model inference.
+- **Sentence Transformers** — Optional local text embeddings using `all-MiniLM-L6-v2`.
+- **Lexical retrieval** — Baseline search that works without the optional embedding model.
 
-## Persistence
+CLAUSE does not use Streamlit, ChromaDB, a paid model API or a hosted database in the current implementation.
 
-The app persists documents, extracted passages, vector records, user accounts and conversations on its local filesystem/SQLite database. Closing the browser or restarting the local server preserves them. This is **not cloud persistence** and is not durable on a host with ephemeral disk. Set `CLAUSE_DATA_DIR` to a backed-up persistent volume for a private long-running host. No external account isolation or cloud backup is configured.
+## 🔬 Research & Evaluation
 
-## Corpus and provenance
+CLAUSE includes a small retrieval evaluation suite. Its current CSV contains **10 checks** against the synthetic sample policies: nine answerable questions with expected-source hits and one unanswerable control.
 
-Three included policies are synthetic examples, not real workplace rules or external documents. User uploads retain their submitted filename, category, optional publication year, and `User upload` provenance. No third-party corpus is redistributed.
-
-## Evaluation
-
-`evaluation/results.csv` contains ten small retrieval checks against synthetic sample documents: 9 answerable expected-source hits and one unanswerable control. This is a retrieval hit check, not answer accuracy, citation faithfulness, or generalization. Admin workspace labels the sample size/scope explicitly. Reproduce the check with:
+These checks measure retrieval behavior only. They are not a measure of answer accuracy, citation faithfulness or performance on a broad policy corpus. Run the evaluation with:
 
 ```sh
 python3 evaluate.py
 ```
 
-## Tests
+The automated unit suite can be run with:
 
 ```sh
 python3 -m unittest discover -s tests -v
 ```
 
-For account, upload, conversation persistence and isolation flows, start CLAUSE with isolated data and an admin allowlist in one terminal:
+The audited build passed 11 unit tests, JavaScript syntax validation, an HTTP smoke flow and a local browser walkthrough. Ollama and the embedding model were unavailable during that audit, so local answer generation and semantic retrieval still need setup and verification.
 
-```sh
-CLAUSE_DATA_DIR=/tmp/clause-audit-data CLAUSE_ADMIN_EMAILS=clause-admin-smoke@example.test python3 app.py
-```
+## 🚧 Current Status
 
-Then run in another terminal:
+CLAUSE is an **internship demonstration project** exploring local RAG for HR policy search.
 
-```sh
-python3 tests/http_smoke.py
-```
+The application supports local accounts, document ingestion, metadata-filtered retrieval, source inspection, saved conversations and restricted admin tools. Its three included policy documents are synthetic examples—not policies from a real employer.
 
-## Deployment limitations
+Data persists in local SQLite and document files, including across browser closure and local server restarts. It is not cloud persistence, and the current application has not been deployed publicly. The local account system has no email verification or password reset. Do not use the demo with confidential employee data or expose it publicly without appropriate security and privacy review.
 
-No public deployment or cloud storage/auth configuration is present. The app requires a long-running Python host with durable filesystem storage, a reachable local Ollama service, and a local embedding model cache. Do not use an ephemeral serverless filesystem. Do not claim a public service is persistent or private without independently configuring and testing those services.
+Local Ollama generation and semantic retrieval depend on installing and configuring their respective components. Until then, CLAUSE operates in retrieval-only mode.
+
+## 🌟 Project Goal
+
+To demonstrate how document retrieval and locally run AI models can make policy information more searchable, understandable and traceable to its source.
+
+**CLAUSE — Every policy. Clearly understood.**
